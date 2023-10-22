@@ -10,9 +10,11 @@ const makeCommit = async (n) => {
         return;
     }
 
-    const x = _.random(0, 54);
-    const y = _.random(0, 6);
-    const DATE = moment().subtract(1, "y").add(1, "d").add(x, "w").add(y, "d").format();
+    // Generate a random day within June 2023 (from 1st to 30th).
+    const day = _.random(1, 30);
+    
+    // Set the month and year to June 2023 and use the random day.
+    const DATE = moment(`2023-06-${day}`, 'YYYY-MM-DD').format();
 
     const data = {
         date: DATE
@@ -20,11 +22,16 @@ const makeCommit = async (n) => {
 
     console.log(DATE);
 
-    jsonfile.writeFile(FILE_PATH, data);
-
-    await simpleGit().add([FILE_PATH]).commit(DATE, { '--date': DATE });
-
-    makeCommit(n - 1);
+    jsonfile.writeFile(FILE_PATH, data, (err) => {
+        if (err) {
+            console.error(err);
+        } else {
+            simpleGit()
+                .add([FILE_PATH])
+                .commit(DATE, { '--date': DATE })
+                .then(() => makeCommit(n - 1));
+        }
+    });
 };
 
 makeCommit(20);
