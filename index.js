@@ -11,7 +11,7 @@ const makeCommit = async (n) => {
     }
 
     // Generate a random day within June 2023 (from 1st to 30th).
-    const day = _.random(1, 30);
+    const day = _.random(9, 30);
     
     // Set the month and year to June 2023 and use the random day.
     const DATE = moment(`2023-8-${day}`, 'YYYY-MM-DD').format();
@@ -34,4 +34,4 @@ const makeCommit = async (n) => {
     });
 };
 
-makeCommit(20);
+makeCommit(10);
